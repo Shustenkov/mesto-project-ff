@@ -6,7 +6,7 @@ const cardContainer = container.querySelector('.places__list');
 
 import {createCard} from './card.js';
 
-initialCards.forEach((element) => cardContainer.append(createCard(element.name, element.link, popupCardImage)));
+initialCards.forEach((element) => cardContainer.append(createCard(element.name, element.link, handleCardImagePopupOpen)));
 
 const buttonEditProfile = document.querySelector('.profile__edit-button');
 const buttonNewCard = document.querySelector('.profile__add-button');
@@ -39,7 +39,7 @@ const cardUrlInput = formPopupNewCard.querySelector('.popup__input_type_url');
 
 import {closeModal, openModal} from './modal.js';
 
-function popupCardImage(src, alt) {
+function handleCardImagePopupOpen(src, alt) {
   popupImagePicture.src = src;
   popupImagePicture.alt = alt;
   popupImageCaption.textContent = alt;
@@ -61,7 +61,7 @@ function handleProfileEditPopupOpen(evt) {
 
 function handleNewCardFormSubmit(evt) {
   evt.preventDefault();
-  cardContainer.prepend(createCard(cardNameInput.value, cardUrlInput.value, popupCardImage));
+  cardContainer.prepend(createCard(cardNameInput.value, cardUrlInput.value, handleCardImagePopupOpen));
   closeModal(popupNewCard);
 }
 
