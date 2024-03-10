@@ -4,88 +4,77 @@ import {initialCards} from './cards.js';
 const container = document.querySelector('.content');
 const cardContainer = container.querySelector('.places__list');
 
-import {removeCard, createCard, cardLike} from './card.js';
+import {createCard} from './card.js';
 
-initialCards.forEach((element) => cardContainer.append(createCard(element.name, element.link, removeCard, cardLike, cardImagePopup)));
+initialCards.forEach((element) => cardContainer.append(createCard(element.name, element.link, popupCardImage)));
 
-const editButton = document.querySelector('.profile__edit-button');
-const addButton = document.querySelector('.profile__add-button');
+const buttonEditProfile = document.querySelector('.profile__edit-button');
+const buttonNewCard = document.querySelector('.profile__add-button');
 
-const editPopup = document.querySelector('.popup_type_edit');
-const newCardPopup = document.querySelector('.popup_type_new-card');
-const imagePopup = document.querySelector('.popup_type_image');
+const popupEditProfile = document.querySelector('.popup_type_edit');
+const popupNewCard = document.querySelector('.popup_type_new-card');
+const popupImage = document.querySelector('.popup_type_image');
+
+const popupEditProfileCloseButton = popupEditProfile.querySelector('.popup__close');
+const popupNewCardCloseButton = popupNewCard.querySelector('.popup__close');
+const popupImageCloseButton = popupImage.querySelector('.popup__close');
+
+//img popup vars
+const popupImagePicture = popupImage.querySelector('.popup__image');
+const popupImageCaption = popupImage.querySelector('.popup__caption');
 
 //edit vars
-const editFormElement = editPopup.querySelector('.popup__form');
-const nameInput = editFormElement.querySelector('.popup__input_type_name');
-const jobInput = editFormElement.querySelector('.popup__input_type_description');
-const editSubmitButton = editFormElement.querySelector('.popup__button');
+const formPopupProfile = popupEditProfile.querySelector('.popup__form');
+const nameInput = formPopupProfile.querySelector('.popup__input_type_name');
+const jobInput = formPopupProfile.querySelector('.popup__input_type_description');
 
 const profileInfo = document.querySelector('.profile__info');
-const title = profileInfo.querySelector('.profile__title');
-const description = profileInfo.querySelector('.profile__description');
+const profileTitle = profileInfo.querySelector('.profile__title');
+const profileDescription = profileInfo.querySelector('.profile__description');
 
 //new card vars
-const newCardFormElement = newCardPopup.querySelector('.popup__form');
-const cardNameInput = newCardFormElement.querySelector('.popup__input_type_card-name');
-const cardUrlInput = newCardFormElement.querySelector('.popup__input_type_url');
-const newCardSubmitButton = newCardFormElement.querySelector('.popup__button');
+const formPopupNewCard = popupNewCard.querySelector('.popup__form');
+const cardNameInput = formPopupNewCard.querySelector('.popup__input_type_card-name');
+const cardUrlInput = formPopupNewCard.querySelector('.popup__input_type_url');
 
 import {closeModal, openModal} from './modal.js';
 
-function cleanEditPopup() {
-  editSubmitButton.removeEventListener('click', handleEditFormSubmit);
+function popupCardImage(src, alt) {
+  popupImagePicture.src = src;
+  popupImagePicture.alt = alt;
+  popupImageCaption.textContent = alt;
+  openModal(popupImage);
 }
 
-function cleanNewCardPopup() {
-  newCardSubmitButton.removeEventListener('click', handleNewCardFormSubmit);
-  cardNameInput.value = '';
-  cardUrlInput.value = '';
-}
-
-function cardImagePopup(src, alt) {
-  const img = imagePopup.querySelector('.popup__image');
-  const caption = imagePopup.querySelector('.popup__caption');
-  img.src = src;
-  img.alt = alt;
-  caption.textContent = alt;
-  openModal(imagePopup);
-}
-
-function cardClickHandler(evt) {
-  const item = evt.target;
-  if (item.classList.contains('card__image')) {
-    cardImagePopup(item.src, item.alt);
-  } else if (item.classList.contains('card__like-button')) {
-    cardLike(evt);
-  }
-}
-
-function handleEditFormSubmit(evt) {
+function handleProfileEditFormSubmit(evt) {
   evt.preventDefault();
-  title.textContent = nameInput.value;
-  description.textContent = jobInput.value;
-  closeModal(editPopup);
+  profileTitle.textContent = nameInput.value;
+  profileDescription.textContent = jobInput.value;
+  closeModal(popupEditProfile);
 }
 
-function editPopupHandler(evt) {
-  nameInput.value = title.textContent;
-  jobInput.value = description.textContent;
-  editSubmitButton.addEventListener('click', handleEditFormSubmit);
-  openModal(editPopup, cleanEditPopup);
+function handleProfileEditPopupOpen(evt) {
+  nameInput.value = profileTitle.textContent;
+  jobInput.value = profileDescription.textContent;
+  openModal(popupEditProfile);
 }
 
 function handleNewCardFormSubmit(evt) {
   evt.preventDefault();
-  cardContainer.prepend(createCard(cardNameInput.value, cardUrlInput.value, removeCard, cardLike, cardImagePopup));
-  closeModal(newCardPopup);
+  cardContainer.prepend(createCard(cardNameInput.value, cardUrlInput.value, popupCardImage));
+  closeModal(popupNewCard);
 }
 
-function newCardPopupHandler(evt) {
-  newCardSubmitButton.addEventListener('click', handleNewCardFormSubmit);
-  openModal(newCardPopup, cleanNewCardPopup);
+function handleNewCardPopupOpen(evt) {
+  cardNameInput.value = '';
+  cardUrlInput.value = '';
+  openModal(popupNewCard);
 }
 
-editButton.addEventListener('click', editPopupHandler);
-addButton.addEventListener('click', newCardPopupHandler);
-cardContainer.addEventListener('click', cardClickHandler);
+buttonEditProfile.addEventListener('click', handleProfileEditPopupOpen);
+buttonNewCard.addEventListener('click', handleNewCardPopupOpen);
+formPopupProfile.addEventListener('submit', handleProfileEditFormSubmit);
+formPopupNewCard.addEventListener('submit', handleNewCardFormSubmit);
+popupEditProfileCloseButton.addEventListener('click', () => closeModal(popupEditProfile));
+popupNewCardCloseButton.addEventListener('click', () => closeModal(popupNewCard));
+popupImageCloseButton.addEventListener('click', () => closeModal(popupImage));
