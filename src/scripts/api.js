@@ -6,28 +6,25 @@ const config = {
   }
 }
 
+function handleResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
 function getUserInfo() {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then((res) => handleResponse(res));
 }
 
 function getInitialCards() {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then((res) => handleResponse(res));
 }
 
 function editProfile(name, description) {
@@ -39,12 +36,7 @@ function editProfile(name, description) {
       about: description
     })
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then((res) => handleResponse(res));
 }
 
 function editAvatar(link) {
@@ -55,12 +47,7 @@ function editAvatar(link) {
       avatar: link
     })
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then((res) => handleResponse(res));
 }
 
 function createNewCard(name, link) {
@@ -72,12 +59,7 @@ function createNewCard(name, link) {
       link: link
     })
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then((res) => handleResponse(res));
 }
 
 function deleteCard(cardId) {
@@ -85,12 +67,7 @@ function deleteCard(cardId) {
     method: 'DELETE',
     headers: config.headers
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then((res) => handleResponse(res));
 }
 
 function putLikeCard(cardId) {
@@ -98,12 +75,7 @@ function putLikeCard(cardId) {
     method: 'PUT',
     headers: config.headers
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then((res) => handleResponse(res));
 }
 
 function removeLikeCard(cardId) {
@@ -111,12 +83,7 @@ function removeLikeCard(cardId) {
     method: 'DELETE',
     headers: config.headers
   })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
+    .then((res) => handleResponse(res));
 }
 
 export {getUserInfo, getInitialCards, editProfile, editAvatar, createNewCard, deleteCard, putLikeCard, removeLikeCard};

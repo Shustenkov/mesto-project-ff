@@ -41,24 +41,15 @@ function removeCard(card, cardId) {
 }
 
 function likeCard(button, cardLikeCounter, cardId) {
-  button.classList.toggle('card__like-button_is-active');
-  if (button.classList.contains('card__like-button_is-active')) {
-    putLikeCard(cardId)
-      .then((res) => {
-        cardLikeCounter.textContent = res.likes.length;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  } else {
-    removeLikeCard(cardId)
-      .then((res) => {
-        cardLikeCounter.textContent = res.likes.length;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  const likeMethod = button.classList.contains('card__like-button_is-active') ? removeLikeCard : putLikeCard;
+  likeMethod(cardId)
+    .then((res) => {
+      cardLikeCounter.textContent = res.likes.length; 
+      button.classList.toggle('card__like-button_is-active'); 
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 export {createCard};
