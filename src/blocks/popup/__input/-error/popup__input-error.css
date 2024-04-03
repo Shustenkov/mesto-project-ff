@@ -1,0 +1,14 @@
+.popup__input-error {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  color: #FF0000;
+  font-size: 12px;
+  line-height: 14.52px;
+  height: 31px;
+  visibility: none;
+}
+
+.popup__input-error_active {
+  visibility: visible;
+}
